@@ -1,21 +1,16 @@
 import java.util.*;
-import repositorios.*;
+
 import controlador.*;
 import vista.*;
 
 public class App {
     public static void main(String[] args) {
-        RepositorioDonante repoDonante = new RepositorioDonante();
-        RepositorioAnimal repoAnimal = new RepositorioAnimal();
-        RepositorioDonacion repoDonacion = new RepositorioDonacion();
+        crudDonante cd = new crudDonante();
+        crudAnimal ca = new crudAnimal();
+        crudDonacion cdo = new crudDonacion();
 
-        ControladorSistema controlador = new ControladorSistema(repoDonante, repoAnimal, repoDonacion);
+        ControladorSistema controlador = new ControladorSistema(cd, ca, cdo);
         VistaSistema vista = new VistaSistema(controlador);
         vista.iniciar();
     }
-
-
-
-    
-    
 }

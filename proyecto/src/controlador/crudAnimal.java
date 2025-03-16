@@ -1,21 +1,20 @@
-package repositorios;
-import java.util.*;
-import controlador.*;
-import java.util.*;
-import modelo.*;
-import repositorios.*;
-import interfaces.*;
+package controlador;
 
-public class RepositorioAnimal implements ICRUD<Animal> {
+import java.util.ArrayList;
+import java.util.List;
+import interfaces.ICRUD;
+import modelo.Animal;
+
+public class crudAnimal implements ICRUD<Animal> {
     private List<Animal> animales = new ArrayList<>();
     private int contadorId = 1;
 
     @Override
     public void agregar(Animal animal) throws Exception {
-        // Validación para evitar duplicados (mismo nombre y especie)
+        // Evitar duplicados: mismo nombre y tipo de animal
         for (Animal a : animales) {
-            if (a.getNombre().equalsIgnoreCase(animal.getNombre()) &&
-                a.getEspecie().equalsIgnoreCase(animal.getEspecie())) {
+            if (a.getNombre().equalsIgnoreCase(animal.getNombre())
+                && a.getTipoAnimal().equalsIgnoreCase(animal.getTipoAnimal())) {
                 throw new Exception("Animal duplicado.");
             }
         }
@@ -30,6 +29,7 @@ public class RepositorioAnimal implements ICRUD<Animal> {
             throw new Exception("Animal no encontrado.");
         }
         existente.setNombre(animal.getNombre());
+        existente.setTipoAnimal(animal.getTipoAnimal());
         existente.setEstadoSalud(animal.getEstadoSalud());
     }
 

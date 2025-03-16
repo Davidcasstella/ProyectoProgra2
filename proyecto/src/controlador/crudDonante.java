@@ -1,25 +1,20 @@
-package repositorios;
-import java.util.*;
+package controlador;
 
-import controlador.*;
-import java.util.*;
-import modelo.*;
-import repositorios.*;
-import interfaces.*;
+import java.util.ArrayList;
+import java.util.List;
+import interfaces.ICRUD;
+import modelo.Donante;
 
-    
-
-
-public class RepositorioDonante implements ICRUD<Donante> {
+public class crudDonante implements ICRUD<Donante> {
     private List<Donante> donantes = new ArrayList<>();
     private int contadorId = 1;
 
     @Override
     public void agregar(Donante donante) throws Exception {
-        // Validación para evitar duplicados (mismo nombre y teléfono)
+        // Evitar duplicados: mismo nombre y teléfono
         for (Donante d : donantes) {
-            if (d.getNombreCompleto().equalsIgnoreCase(donante.getNombreCompleto()) &&
-                d.getTelefono().equals(donante.getTelefono())) {
+            if (d.getNombreCompleto().equalsIgnoreCase(donante.getNombreCompleto())
+                && d.getTelefono().equals(donante.getTelefono())) {
                 throw new Exception("Donante duplicado.");
             }
         }

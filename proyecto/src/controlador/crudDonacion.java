@@ -1,19 +1,19 @@
-package repositorios;
-import java.util.*;
-import controlador.*;
-import java.util.*;
-import modelo.*;
-import repositorios.*;
-import interfaces.*;
+package controlador;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import interfaces.ICRUD;
+import modelo.Donacion;
 
-public class RepositorioDonacion implements ICRUD<Donacion> {
+public class crudDonacion implements ICRUD<Donacion> {
     private List<Donacion> donaciones = new ArrayList<>();
     private int contadorId = 1;
 
     @Override
     public void agregar(Donacion donacion) throws Exception {
         donacion.setId(contadorId++);
+        donacion.setFechaDonacion(new Date());
         donaciones.add(donacion);
     }
 

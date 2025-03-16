@@ -1,10 +1,6 @@
 package interfaces;
-import java.util.*;
 
-import java.util.*;
-import modelo.*;
-import repositorios.*;
-import interfaces.*;
+import java.util.List;
 
 public interface ICRUD<T> {
     void agregar(T objeto) throws Exception;

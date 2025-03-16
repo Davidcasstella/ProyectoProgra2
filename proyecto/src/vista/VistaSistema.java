@@ -1,10 +1,12 @@
 package vista;
-import java.util.*;
-import controlador.*;
-import java.util.*;
-import modelo.*;
-import repositorios.*;
-import interfaces.*;
+
+import controlador.ControladorSistema;
+import modelo.Donante;
+import modelo.Animal;
+import modelo.Donacion;
+
+import java.util.List;
+import java.util.Scanner;
 
 public class VistaSistema {
     private ControladorSistema controlador;
@@ -12,7 +14,7 @@ public class VistaSistema {
 
     public VistaSistema(ControladorSistema controlador) {
         this.controlador = controlador;
-        scanner = new Scanner(System.in);
+        this.scanner = new Scanner(System.in);
     }
 
     public void iniciar() {
@@ -82,21 +84,64 @@ public class VistaSistema {
         String nombre = scanner.nextLine();
         System.out.print("Ingrese teléfono: ");
         String telefono = scanner.nextLine();
-        System.out.print("Ingrese tipo de donación (DINERO, ALIMENTO, MEDICAMENTOS): ");
-        String tipoStr = scanner.nextLine();
-        TipoDonacion tipo = TipoDonacion.valueOf(tipoStr.toUpperCase());
-        controlador.agregarDonante(nombre, telefono, tipo);
+
+        System.out.println("Seleccione el tipo de donación:");
+        System.out.println("1. DINERO");
+        System.out.println("2. ALIMENTO");
+        System.out.println("3. MEDICAMENTOS");
+        System.out.print("Opción: ");
+        int opcionTipo = Integer.parseInt(scanner.nextLine());
+        String tipoDonacion;
+        switch (opcionTipo) {
+            case 1:
+                tipoDonacion = "DINERO";
+                break;
+            case 2:
+                tipoDonacion = "ALIMENTO";
+                break;
+            case 3:
+                tipoDonacion = "MEDICAMENTOS";
+                break;
+            default:
+                throw new Exception("Opción de tipo de donación inválida.");
+        }
+
+        controlador.agregarDonante(nombre, telefono, tipoDonacion);
         System.out.println("Donante registrado exitosamente.");
     }
 
     private void registrarAnimal() throws Exception {
-        System.out.print("Ingrese tipo de animal (Perro, Gato): ");
-        String tipoAnimal = scanner.nextLine();
+        System.out.print("Ingrese el tipo de animal (ej: Perro, Gato, Conejo, etc.): ");
+        String tipo = scanner.nextLine();
         System.out.print("Ingrese nombre del animal: ");
         String nombre = scanner.nextLine();
-        System.out.print("Ingrese estado de salud: ");
-        String estado = scanner.nextLine();
-        controlador.agregarAnimal(tipoAnimal, nombre, estado);
+
+        System.out.println("Seleccione el estado de salud:");
+        System.out.println("1. MAL");
+        System.out.println("2. REGULAR");
+        System.out.println("3. BIEN");
+        System.out.println("4. URGENTE");
+        System.out.print("Opción: ");
+        int opcionEstado = Integer.parseInt(scanner.nextLine());
+        String estadoSalud;
+        switch (opcionEstado) {
+            case 1:
+                estadoSalud = "MAL";
+                break;
+            case 2:
+                estadoSalud = "REGULAR";
+                break;
+            case 3:
+                estadoSalud = "BIEN";
+                break;
+            case 4:
+                estadoSalud = "URGENTE";
+                break;
+            default:
+                throw new Exception("Opción de estado de salud inválida.");
+        }
+
+        controlador.agregarAnimal(tipo, nombre, estadoSalud);
         System.out.println("Animal registrado exitosamente.");
     }
 
@@ -127,7 +172,8 @@ public class VistaSistema {
         System.out.println("Lista de Donantes:");
         for (Donante d : controlador.listarDonantes()) {
             System.out.println("ID: " + d.getId() + " | Nombre: " + d.getNombreCompleto() +
-                    " | Teléfono: " + d.getTelefono() + " | Tipo: " + d.getTipoDonacion());
+                               " | Teléfono: " + d.getTelefono() +
+                               " | Tipo de donación: " + d.getTipoDonacion());
         }
     }
 
@@ -135,7 +181,8 @@ public class VistaSistema {
         System.out.println("Lista de Animales:");
         for (Animal a : controlador.listarAnimales()) {
             System.out.println("ID: " + a.getId() + " | Nombre: " + a.getNombre() +
-                    " | Especie: " + a.getEspecie() + " | Estado: " + a.getEstadoSalud());
+                               " | Tipo: " + a.getTipoAnimal() +
+                               " | Estado: " + a.getEstadoSalud());
         }
     }
 
@@ -143,8 +190,10 @@ public class VistaSistema {
         System.out.println("Lista de Donaciones:");
         for (Donacion d : controlador.listarDonaciones()) {
             String animalNombre = (d.getAnimalAsignado() != null) ? d.getAnimalAsignado().getNombre() : "No asignado";
-            System.out.println("ID: " + d.getId() + " | Donante: " + d.getDonante().getNombreCompleto() +
-                    " | Animal: " + animalNombre + " | Fecha: " + d.getFechaDonacion());
+            System.out.println("ID: " + d.getId() +
+                               " | Donante: " + d.getDonante().getNombreCompleto() +
+                               " | Animal: " + animalNombre +
+                               " | Fecha: " + d.getFechaDonacion());
         }
     }
 }
