@@ -1,9 +1,7 @@
 package controlador;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Calendar;
+import managment.GestionReportes;
+
 import java.util.Date;
 import java.util.List;
 import modelo.Donacion;
@@ -14,14 +12,17 @@ public class ControladorSistema {
     private crudDonante crudDonante;
     private crudAnimal crudAnimal;
     private crudDonacion crudDonacion;
+    private GestionReportes gestionReportes;
 
     public ControladorSistema(crudDonante cd, crudAnimal ca, crudDonacion cdo) {
         this.crudDonante = cd;
         this.crudAnimal = ca;
         this.crudDonacion = cdo;
+        // Instanciamos la clase que maneja los reportes, pasándole el crudDonacion
+        this.gestionReportes = new GestionReportes(cdo);
     }
 
-    // CRUD para Donante
+    // ------------------ CRUD Donante ------------------
     public void agregarDonante(String nombre, String telefono, String tipoDonacion) throws Exception {
         Donante donante = new Donante();
         donante.setNombreCompleto(nombre);
@@ -53,7 +54,7 @@ public class ControladorSistema {
         return crudDonante.obtenerTodos();
     }
 
-    // CRUD para Animal
+    // ------------------ CRUD Animal ------------------
     public void agregarAnimal(String tipoAnimal, String nombre, String estadoSalud) throws Exception {
         Animal animal = new Animal();
         animal.setNombre(nombre);
@@ -85,7 +86,7 @@ public class ControladorSistema {
         return crudAnimal.obtenerTodos();
     }
 
-    // Asignar una donación a un animal
+    // ------------------ Donaciones ------------------
     public void asignarDonacion(int donanteId, int animalId) throws Exception {
         Donante donante = crudDonante.buscarPorId(donanteId);
         Animal animal = crudAnimal.buscarPorId(animalId);
@@ -103,63 +104,12 @@ public class ControladorSistema {
         return crudDonacion.obtenerTodos();
     }
 
-    // Reporte de Donaciones por mes (se guarda en la carpeta "Managment")
+    // ------------------ Reportes (delegados a GestionReportes) ------------------
     public String generarReporteDonacionesPorMes(int mes, int anio) {
-        List<Donacion> donaciones = crudDonacion.obtenerTodos();
-        StringBuilder reporte = new StringBuilder();
-        reporte.append("Reporte de donaciones recibidas por mes.\n");
-        reporte.append("Mes: " + mes + ", Año: " + anio + "\n");
-
-        for (Donacion d : donaciones) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(d.getFechaDonacion());
-            int mesDonacion = cal.get(Calendar.MONTH) + 1;
-            int anioDonacion = cal.get(Calendar.YEAR);
-            if (mesDonacion == mes && anioDonacion == anio) {
-                reporte.append("ID: " + d.getId() 
-                             + " - Donante: " + d.getDonante().getNombreCompleto()
-                             + " - Tipo de donación: " + d.getDonante().getTipoDonacion()
-                             + " - Fecha: " + d.getFechaDonacion() + "\n");
-            }
-        }
-
-        try {
-            // 1) Crear la carpeta "Managment" si no existe
-            Files.createDirectories(Paths.get("Managment"));
-            // 2) Guardar el reporte
-            Files.write(Paths.get("Managment/ReporteDonacionesRecibidasPorMes.txt"),
-                        reporte.toString().getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return reporte.toString();
+        return gestionReportes.generarReporteDonacionesPorMes(mes, anio);
     }
 
-    // Reporte de Animales Atendidos (se guarda en la carpeta "Managment")
     public String generarReporteAnimalesAtendidos() {
-        List<Donacion> donaciones = crudDonacion.obtenerTodos();
-        StringBuilder reporte = new StringBuilder();
-        reporte.append("Reporte de animales atendidos.\n");
-
-        for (Donacion d : donaciones) {
-            if (d.getAnimalAsignado() != null) {
-                reporte.append("Animal ID: " + d.getAnimalAsignado().getId()
-                             + " - Nombre: " + d.getAnimalAsignado().getNombre()
-                             + " - Tipo: " + d.getAnimalAsignado().getTipoAnimal() + "\n");
-            }
-        }
-
-        try {
-            // 1) Crear la carpeta "Managment" si no existe
-            Files.createDirectories(Paths.get("Managment"));
-            // 2) Guardar el reporte
-            Files.write(Paths.get("Managment/ReporteDeAnimalesAtendidos.txt"),
-                        reporte.toString().getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return reporte.toString();
+        return gestionReportes.generarReporteAnimalesAtendidos();
     }
 }
