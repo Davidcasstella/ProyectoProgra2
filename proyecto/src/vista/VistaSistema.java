@@ -60,7 +60,7 @@ public class VistaSistema {
     }
 
     private void mostrarMenu() {
-        System.out.println("\n--- Bienvenido al Sistema de Registro de Donaciones ---");
+        System.out.println("\n--- Sistema de Registro de Donaciones ---");
         System.out.println("1. Gestionar/Registrar Donante");
         System.out.println("2. Gestionar/Registrar Animal");
         System.out.println("3. Asignar Donación a Animal");
@@ -79,7 +79,7 @@ public class VistaSistema {
             System.out.println("2. Actualizar Donante");
             System.out.println("3. Eliminar Donante");
             System.out.println("4. Listar Donantes");
-            System.out.println("5. Volver a menu Principal");
+            System.out.println("5. Volver al Menú Principal");
             System.out.print("Seleccione una opción: ");
             opcion = Integer.parseInt(scanner.nextLine());
 
@@ -112,7 +112,7 @@ public class VistaSistema {
             System.out.println("2. Actualizar Animal");
             System.out.println("3. Eliminar Animal");
             System.out.println("4. Listar Animales");
-            System.out.println("5. Volver a menu Principal");
+            System.out.println("5. Volver al Menú Principal");
             System.out.print("Seleccione una opción: ");
             opcion = Integer.parseInt(scanner.nextLine());
 
@@ -137,8 +137,7 @@ public class VistaSistema {
         }
     }
 
-    // Métodos CRUD para Donantes y Animales (registrar, actualizar, eliminar, listar)
-
+    // Métodos CRUD para Donantes
     private void registrarDonante() throws Exception {
         System.out.print("Ingrese nombre completo: ");
         String nombre = scanner.nextLine();
@@ -182,8 +181,28 @@ public class VistaSistema {
         d.setNombreCompleto(scanner.nextLine());
         System.out.print("Ingrese el nuevo teléfono: ");
         d.setTelefono(scanner.nextLine());
-        System.out.print("Ingrese el nuevo tipo de donación: ");
-        d.setTipoDonacion(scanner.nextLine());
+
+        System.out.println("Seleccione el nuevo tipo de donación:");
+        System.out.println("1. DINERO");
+        System.out.println("2. ALIMENTO");
+        System.out.println("3. MEDICAMENTOS");
+        System.out.print("Opción: ");
+        int opcionTipo = Integer.parseInt(scanner.nextLine());
+        String tipoDonacion;
+        switch (opcionTipo) {
+            case 1:
+                tipoDonacion = "DINERO";
+                break;
+            case 2:
+                tipoDonacion = "ALIMENTO";
+                break;
+            case 3:
+                tipoDonacion = "MEDICAMENTOS";
+                break;
+            default:
+                throw new Exception("Opción de tipo de donación inválida.");
+        }
+        d.setTipoDonacion(tipoDonacion);
 
         controlador.actualizarDonante(d.getId(), d.getNombreCompleto(), d.getTelefono(), d.getTipoDonacion());
         System.out.println("Donante actualizado exitosamente.");
@@ -205,8 +224,9 @@ public class VistaSistema {
         }
     }
 
+    // Métodos CRUD para Animales
     private void registrarAnimal() throws Exception {
-        System.out.print("Ingrese el tipo de animal (ej: Perro, Gato, Conejo, etc.): ");
+        System.out.print("Ingrese el tipo de animal (ej: Perro, Gato, etc.): ");
         String tipo = scanner.nextLine();
         System.out.print("Ingrese nombre del animal: ");
         String nombre = scanner.nextLine();
@@ -252,8 +272,23 @@ public class VistaSistema {
         a.setNombre(scanner.nextLine());
         System.out.print("Ingrese el nuevo tipo de animal: ");
         a.setTipoAnimal(scanner.nextLine());
-        System.out.print("Ingrese el nuevo estado de salud: ");
-        a.setEstadoSalud(scanner.nextLine());
+        
+        System.out.println("Seleccione el nuevo estado de salud:");
+        System.out.println("1. MAL");
+        System.out.println("2. REGULAR");
+        System.out.println("3. BIEN");
+        System.out.println("4. URGENTE");
+        System.out.print("Opción: ");
+        int opcionEstado = Integer.parseInt(scanner.nextLine());
+        String estadoSalud;
+        switch(opcionEstado) {
+            case 1: estadoSalud = "MAL"; break;
+            case 2: estadoSalud = "REGULAR"; break;
+            case 3: estadoSalud = "BIEN"; break;
+            case 4: estadoSalud = "URGENTE"; break;
+            default: throw new Exception("Opción de estado de salud inválida.");
+        }
+        a.setEstadoSalud(estadoSalud);
 
         controlador.actualizarAnimal(a.getId(), a.getNombre(), a.getTipoAnimal(), a.getEstadoSalud());
         System.out.println("Animal actualizado exitosamente.");
@@ -275,6 +310,7 @@ public class VistaSistema {
         }
     }
 
+    // Métodos para Donaciones
     private void asignarDonacion() throws Exception {
         System.out.print("Ingrese ID del donante: ");
         int idDonante = Integer.parseInt(scanner.nextLine());
@@ -284,6 +320,7 @@ public class VistaSistema {
         System.out.println("Donación asignada exitosamente.");
     }
 
+    // Reportes
     private void generarReporteDonaciones() {
         System.out.print("Ingrese mes (número): ");
         int mes = Integer.parseInt(scanner.nextLine());
