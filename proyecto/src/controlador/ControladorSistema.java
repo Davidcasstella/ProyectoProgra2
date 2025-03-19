@@ -18,7 +18,6 @@ public class ControladorSistema {
         this.crudDonante = cd;
         this.crudAnimal = ca;
         this.crudDonacion = cdo;
-        // Instanciamos la clase que maneja los reportes, pasándole el crudDonacion
         this.gestionReportes = new GestionReportes(cdo);
     }
 
@@ -104,7 +103,7 @@ public class ControladorSistema {
         return crudDonacion.obtenerTodos();
     }
 
-    // ------------------ Reportes (delegados a GestionReportes) ------------------
+    // ------------------ Reportes ------------------
     public String generarReporteDonacionesPorMes(int mes, int anio) {
         return gestionReportes.generarReporteDonacionesPorMes(mes, anio);
     }

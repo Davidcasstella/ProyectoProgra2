@@ -30,10 +30,10 @@ public class VistaSistema {
             try {
                 switch (opcion) {
                     case 1:
-                        registrarDonante();
+                        gestionarDonante();
                         break;
                     case 2:
-                        registrarAnimal();
+                        gestionarAnimal();
                         break;
                     case 3:
                         asignarDonacion();
@@ -45,12 +45,6 @@ public class VistaSistema {
                         generarReporteAnimales();
                         break;
                     case 6:
-                        listarDonantes();
-                        break;
-                    case 7:
-                        listarAnimales();
-                        break;
-                    case 8:
                         listarDonaciones();
                         break;
                     case 0:
@@ -66,18 +60,84 @@ public class VistaSistema {
     }
 
     private void mostrarMenu() {
-        System.out.println("\n--- Sistema de Registro de Donaciones ---");
-        System.out.println("1. Registrar Donante");
-        System.out.println("2. Registrar Animal");
+        System.out.println("\n--- Bienvenido al Sistema de Registro de Donaciones ---");
+        System.out.println("1. Gestionar/Registrar Donante");
+        System.out.println("2. Gestionar/Registrar Animal");
         System.out.println("3. Asignar Donación a Animal");
         System.out.println("4. Generar Reporte de Donaciones por Mes");
         System.out.println("5. Generar Reporte de Animales Atendidos");
-        System.out.println("6. Listar Donantes");
-        System.out.println("7. Listar Animales");
-        System.out.println("8. Listar Donaciones");
+        System.out.println("6. Listar Donaciones");
         System.out.println("0. Salir");
         System.out.print("Seleccione una opción: ");
     }
+
+    private void gestionarDonante() throws Exception {
+        int opcion = -1;
+        while (opcion != 5) {
+            System.out.println("\n--- Gestión de Donantes ---");
+            System.out.println("1. Registrar Donante");
+            System.out.println("2. Actualizar Donante");
+            System.out.println("3. Eliminar Donante");
+            System.out.println("4. Listar Donantes");
+            System.out.println("5. Volver a menu Principal");
+            System.out.print("Seleccione una opción: ");
+            opcion = Integer.parseInt(scanner.nextLine());
+
+            switch (opcion) {
+                case 1:
+                    registrarDonante();
+                    break;
+                case 2:
+                    actualizarDonante();
+                    break;
+                case 3:
+                    eliminarDonante();
+                    break;
+                case 4:
+                    listarDonantes();
+                    break;
+                case 5:
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+            }
+        }
+    }
+
+    private void gestionarAnimal() throws Exception {
+        int opcion = -1;
+        while (opcion != 5) {
+            System.out.println("\n--- Gestión de Animales ---");
+            System.out.println("1. Registrar Animal");
+            System.out.println("2. Actualizar Animal");
+            System.out.println("3. Eliminar Animal");
+            System.out.println("4. Listar Animales");
+            System.out.println("5. Volver a menu Principal");
+            System.out.print("Seleccione una opción: ");
+            opcion = Integer.parseInt(scanner.nextLine());
+
+            switch (opcion) {
+                case 1:
+                    registrarAnimal();
+                    break;
+                case 2:
+                    actualizarAnimal();
+                    break;
+                case 3:
+                    eliminarAnimal();
+                    break;
+                case 4:
+                    listarAnimales();
+                    break;
+                case 5:
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+            }
+        }
+    }
+
+    // Métodos CRUD para Donantes y Animales (registrar, actualizar, eliminar, listar)
 
     private void registrarDonante() throws Exception {
         System.out.print("Ingrese nombre completo: ");
@@ -108,6 +168,41 @@ public class VistaSistema {
 
         controlador.agregarDonante(nombre, telefono, tipoDonacion);
         System.out.println("Donante registrado exitosamente.");
+    }
+
+    private void actualizarDonante() throws Exception {
+        System.out.print("Ingrese ID del donante a actualizar: ");
+        int idDonante = Integer.parseInt(scanner.nextLine());
+        Donante d = controlador.listarDonantes().stream()
+                               .filter(donante -> donante.getId() == idDonante)
+                               .findFirst()
+                               .orElseThrow(() -> new Exception("Donante no encontrado"));
+
+        System.out.print("Ingrese el nuevo nombre: ");
+        d.setNombreCompleto(scanner.nextLine());
+        System.out.print("Ingrese el nuevo teléfono: ");
+        d.setTelefono(scanner.nextLine());
+        System.out.print("Ingrese el nuevo tipo de donación: ");
+        d.setTipoDonacion(scanner.nextLine());
+
+        controlador.actualizarDonante(d.getId(), d.getNombreCompleto(), d.getTelefono(), d.getTipoDonacion());
+        System.out.println("Donante actualizado exitosamente.");
+    }
+
+    private void eliminarDonante() throws Exception {
+        System.out.print("Ingrese ID del donante a eliminar: ");
+        int idDonante = Integer.parseInt(scanner.nextLine());
+        controlador.eliminarDonante(idDonante);
+        System.out.println("Donante eliminado exitosamente.");
+    }
+
+    private void listarDonantes() {
+        System.out.println("Lista de Donantes:");
+        for (Donante d : controlador.listarDonantes()) {
+            System.out.println("ID: " + d.getId() + " | Nombre: " + d.getNombreCompleto() +
+                               " | Teléfono: " + d.getTelefono() +
+                               " | Tipo de donación: " + d.getTipoDonacion());
+        }
     }
 
     private void registrarAnimal() throws Exception {
@@ -145,6 +240,41 @@ public class VistaSistema {
         System.out.println("Animal registrado exitosamente.");
     }
 
+    private void actualizarAnimal() throws Exception {
+        System.out.print("Ingrese ID del animal a actualizar: ");
+        int idAnimal = Integer.parseInt(scanner.nextLine());
+        Animal a = controlador.listarAnimales().stream()
+                               .filter(animal -> animal.getId() == idAnimal)
+                               .findFirst()
+                               .orElseThrow(() -> new Exception("Animal no encontrado"));
+
+        System.out.print("Ingrese el nuevo nombre del animal: ");
+        a.setNombre(scanner.nextLine());
+        System.out.print("Ingrese el nuevo tipo de animal: ");
+        a.setTipoAnimal(scanner.nextLine());
+        System.out.print("Ingrese el nuevo estado de salud: ");
+        a.setEstadoSalud(scanner.nextLine());
+
+        controlador.actualizarAnimal(a.getId(), a.getNombre(), a.getTipoAnimal(), a.getEstadoSalud());
+        System.out.println("Animal actualizado exitosamente.");
+    }
+
+    private void eliminarAnimal() throws Exception {
+        System.out.print("Ingrese ID del animal a eliminar: ");
+        int idAnimal = Integer.parseInt(scanner.nextLine());
+        controlador.eliminarAnimal(idAnimal);
+        System.out.println("Animal eliminado exitosamente.");
+    }
+
+    private void listarAnimales() {
+        System.out.println("Lista de Animales:");
+        for (Animal a : controlador.listarAnimales()) {
+            System.out.println("ID: " + a.getId() + " | Nombre: " + a.getNombre() +
+                               " | Tipo: " + a.getTipoAnimal() +
+                               " | Estado: " + a.getEstadoSalud());
+        }
+    }
+
     private void asignarDonacion() throws Exception {
         System.out.print("Ingrese ID del donante: ");
         int idDonante = Integer.parseInt(scanner.nextLine());
@@ -166,24 +296,6 @@ public class VistaSistema {
     private void generarReporteAnimales() {
         String reporte = controlador.generarReporteAnimalesAtendidos();
         System.out.println("Reporte generado:\n" + reporte);
-    }
-
-    private void listarDonantes() {
-        System.out.println("Lista de Donantes:");
-        for (Donante d : controlador.listarDonantes()) {
-            System.out.println("ID: " + d.getId() + " | Nombre: " + d.getNombreCompleto() +
-                               " | Teléfono: " + d.getTelefono() +
-                               " | Tipo de donación: " + d.getTipoDonacion());
-        }
-    }
-
-    private void listarAnimales() {
-        System.out.println("Lista de Animales:");
-        for (Animal a : controlador.listarAnimales()) {
-            System.out.println("ID: " + a.getId() + " | Nombre: " + a.getNombre() +
-                               " | Tipo: " + a.getTipoAnimal() +
-                               " | Estado: " + a.getEstadoSalud());
-        }
     }
 
     private void listarDonaciones() {
