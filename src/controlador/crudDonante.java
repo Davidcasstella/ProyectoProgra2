@@ -13,7 +13,7 @@ public class crudDonante implements ICRUD<Donante> {
     private List<Donante> donantes = new ArrayList<>();
     private int contadorId = 1;
 
-    private static final String FILE_PATH = "Persistencia/donantes.txt";
+    private static final String FILE_PATH = "src/Persistencia/donantes.txt";
 
     public crudDonante() {
         loadFromFile();

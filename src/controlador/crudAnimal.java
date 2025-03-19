@@ -13,7 +13,8 @@ public class crudAnimal implements ICRUD<Animal> {
     private List<Animal> animales = new ArrayList<>();
     private int contadorId = 1;
 
-    private static final String FILE_PATH = "Persistencia/animales.txt";
+    // Ruta corregida para src/persistencia
+    private static final String FILE_PATH = "src/persistencia/animales.txt";  // Cambié la ruta
 
     public crudAnimal() {
         loadFromFile();
@@ -102,7 +103,8 @@ public class crudAnimal implements ICRUD<Animal> {
 
     private void saveToFile() {
         try {
-            Files.createDirectories(Paths.get("Persistencia"));
+            // Asegúrate de que el directorio existe antes de escribir el archivo
+            Files.createDirectories(Paths.get("src/persistencia"));  // Ruta corregida
         } catch (IOException e1) {
             e1.printStackTrace();
         }

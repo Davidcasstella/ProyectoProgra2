@@ -79,10 +79,10 @@ public class GestionReportes {
                .append(mes).append("/").append(anio)
                .append(": ").append(contador).append("\n");
 
-        // Guardar reporte en archivo
+        // Guardar reporte en archivo dentro de src/Managment
         try {
-            Files.createDirectories(Paths.get("Managment"));  // Crea la carpeta si no existe
-            Files.write(Paths.get("Managment/ReporteDonacionesRecibidasPorMes.txt"),
+            Files.createDirectories(Paths.get("src/Managment"));  // Crea la carpeta si no existe
+            Files.write(Paths.get("src/Managment/ReporteDonacionesRecibidasPorMes.txt"),
                         reporte.toString().getBytes());
         } catch (IOException e) {
             e.printStackTrace();
@@ -141,10 +141,10 @@ public class GestionReportes {
 
         reporte.append("\nTotal de Animales Atendidos: ").append(contador).append("\n");
 
-        // Guardar reporte en archivo
+        // Guardar reporte en archivo dentro de src/Managment
         try {
-            Files.createDirectories(Paths.get("Managment"));
-            Files.write(Paths.get("Managment/ReporteDeAnimalesAtendidos.txt"),
+            Files.createDirectories(Paths.get("src/Managment"));
+            Files.write(Paths.get("src/Managment/ReporteDeAnimalesAtendidos.txt"),
                         reporte.toString().getBytes());
         } catch (IOException e) {
             e.printStackTrace();

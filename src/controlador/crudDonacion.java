@@ -21,7 +21,7 @@ public class crudDonacion implements ICRUD<Donacion> {
     private int contadorId = 1;
 
     // Rutas y dependencias
-    private static final String FILE_PATH = "Persistencia/donaciones.txt";
+    private static final String FILE_PATH = "src/Persistencia/donaciones.txt";
     private crudDonante crudDonante;
     private crudAnimal crudAnimal;
 
