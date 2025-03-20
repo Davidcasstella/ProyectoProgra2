@@ -1,10 +1,10 @@
 ****************************************************************
      REPORTE DE ANIMALES ATENDIDOS (CON DONANTE Y DETALLES)      
 ****************************************************************
-Generado: 19/03/2025 19:11:24
+Generado: 19/03/2025 20:41:49
 
 ID    | Animal          | Salud        | Donante              | Tipo Don.       | Teléfono     | Fecha Donación           
 -----------------------------------------------------------------------------------------------------
-1     | 234             | REGULAR      | 123                  | DINERO          | 123          | Wed Mar 19 19:06:19 COT 2025
+3     | Perro           | BIEN         | Juan Perez           | DINERO          | 123456789    | Wed Dec 31 19:00:00 COT 1969
 
 Total de Animales Atendidos: 1
